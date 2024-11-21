@@ -5,7 +5,13 @@ import { RootState } from "@/redux/store";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Bus } from "lucide-react";
 
@@ -75,127 +81,132 @@ export default function SeatUI() {
 
   return (
     <>
-    {/* Navigation Bar */}
-    <nav className="bg-blue-600 text-white p-4 flex items-center justify-between shadow-md">
+      {/* Navigation Bar */}
+      <nav className="bg-blue-600 text-white p-4 flex items-center justify-between shadow-md">
         <div className="flex items-center space-x-3">
           <Bus size={32} strokeWidth={2} />
           <h1 className="text-xl font-bold">Selise Bus Shuttle</h1>
         </div>
       </nav>
-    <div className="flex flex-col justify-center items-center h-screen">
-      <div className="w-full max-w-lg p-4">
-        {/* Admin/User Panel Button */}
-        <div className="mb-4 flex justify-end">
-          <Button
-            onClick={() =>
-              (window.location.href = adminView ? "/" : "/admin-panel")
-            }
-          >
-            {adminView ? "Go to User Panel" : "Go to Admin Panel"}
-          </Button>
-        </div>
 
-        {/* Bus Selector */}
-        <div className="mb-4">
-          <label
-            htmlFor="bus-selector"
-            className="block text-sm font-medium mb-2"
-          >
-            Select Bus
-          </label>
-          <Select
-            value={selectedBus}
-            onValueChange={(value) => setSelectedBus(value)}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a bus" />
-            </SelectTrigger>
-            <SelectContent>
-              {buses.map((bus) => (
-          <SelectItem key={bus} value={bus}>
-            {bus}
-          </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        
+      {/* Panel Label */}
+      <div className="bg-blue-200 text-blue-800 font-bold text-center py-2">
+        {adminView ? "Admin Panel" : "User Panel"}
+      </div>
+      
+      <div className="flex flex-col justify-center items-center h-screen">
+        <div className="w-full max-w-lg p-4">
+          {/* Admin/User Panel Button */}
+          <div className="mb-4 flex justify-end">
+            <Button
+              onClick={() =>
+                (window.location.href = adminView ? "/" : "/admin-panel")
+              }
+            >
+              {adminView ? "Go to User Panel" : "Go to Admin Panel"}
+            </Button>
+          </div>
 
-        {/* Seat Grid */}
-        <Card className="mb-4">
-          {/* Circular UI Element for Driver */}
-          <div className="flex justify-end mb-4 mt-4 mr-6">
-            <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center">
-              <span className="text-lg font-bold">Driver</span>
+          {/* Bus Selector */}
+          <div className="mb-4">
+            <label
+              htmlFor="bus-selector"
+              className="block text-sm font-medium mb-2"
+            >
+              Select Bus
+            </label>
+            <Select
+              value={selectedBus}
+              onValueChange={(value) => setSelectedBus(value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a bus" />
+              </SelectTrigger>
+              <SelectContent>
+                {buses.map((bus) => (
+                  <SelectItem key={bus} value={bus}>
+                    {bus}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Seat Grid */}
+          <Card className="mb-4">
+            {/* Circular UI Element for Driver */}
+            <div className="flex justify-end mb-4 mt-4 mr-6">
+              <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center">
+                <span className="text-lg font-bold">Driver</span>
+              </div>
             </div>
-          </div>
-          <CardContent className="grid grid-cols-3 gap-2 mt-4">
-            {seats.map((seat) => (
-              <Button
-                key={seat}
-                className={`h-12 ${
-                  bookedSeats.includes(seat) ? "bg-gray-400" : "bg-white"
-                } text-black hover:text-white`}
-                onClick={() => handleSeatClick(seat)}
-              >
-                {seat}
-              </Button>
-            ))}
-          </CardContent>
-        </Card>
+            <CardContent className="grid grid-cols-3 gap-2 mt-4">
+              {seats.map((seat) => (
+                <Button
+                  key={seat}
+                  className={`h-12 ${
+                    bookedSeats.includes(seat) ? "bg-gray-400" : "bg-white"
+                  } text-black hover:text-white`}
+                  onClick={() => handleSeatClick(seat)}
+                >
+                  {seat}
+                </Button>
+              ))}
+            </CardContent>
+          </Card>
 
-        {/* Dialog for Booked Seat */}
-        <Dialog
-          open={!!selectedSeat && !seatNotBooked}
-          onOpenChange={() => setSelectedSeat(null)}
-        >
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Details for Seat {selectedSeat}</DialogTitle>
-              {seatDetails ? (
-                <div className="mt-2">
-                  <p>
-                    <strong>Name:</strong> {seatDetails.name}
-                  </p>
-                  <p>
-                    <strong>Destination:</strong> {seatDetails.destination}
-                  </p>
-                  <p>
-                    <strong>Time:</strong> {seatDetails.time}
-                  </p>
-                </div>
-              ) : (
-                <p>No details available for this seat.</p>
-              )}
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+          {/* Dialog for Booked Seat */}
+          <Dialog
+            open={!!selectedSeat && !seatNotBooked}
+            onOpenChange={() => setSelectedSeat(null)}
+          >
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Details for Seat {selectedSeat}</DialogTitle>
+                {seatDetails ? (
+                  <div className="mt-2">
+                    <p>
+                      <strong>Name:</strong> {seatDetails.name}
+                    </p>
+                    <p>
+                      <strong>Destination:</strong> {seatDetails.destination}
+                    </p>
+                    <p>
+                      <strong>Time:</strong> {seatDetails.time}
+                    </p>
+                  </div>
+                ) : (
+                  <p>No details available for this seat.</p>
+                )}
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
 
-        {/* Dialog for Unbooked Seat in Admin View */}
-        <Dialog
-          open={seatNotBooked}
-          onOpenChange={() => setSeatNotBooked(false)}
-        >
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>This seat has not been booked.</DialogTitle>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+          {/* Dialog for Unbooked Seat in Admin View */}
+          <Dialog
+            open={seatNotBooked}
+            onOpenChange={() => setSeatNotBooked(false)}
+          >
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>This seat has not been booked.</DialogTitle>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
 
-        {/* Legend */}
-        <div className="mb-4 flex justify-center items-center">
-          <div className="flex items-center mr-4">
-            <div className="w-4 h-4 bg-gray-400 mr-2"></div>
-            <span>Booked</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-4 h-4 bg-white border mr-2"></div>
-            <span>Unbooked</span>
+          {/* Legend */}
+          <div className="mb-4 flex justify-center items-center">
+            <div className="flex items-center mr-4">
+              <div className="w-4 h-4 bg-gray-400 mr-2"></div>
+              <span>Booked</span>
+            </div>
+            <div className="flex items-center">
+              <div className="w-4 h-4 bg-white border mr-2"></div>
+              <span>Unbooked</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 }
