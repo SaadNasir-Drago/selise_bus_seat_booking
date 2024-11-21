@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -20,16 +21,16 @@ const destinations = ["Mirpur 11", "Dhanmondi", "Gulshan"];
 const times = ["8:00 am", "9:00 am", "5:00 pm", "6:00 pm"];
 const buses = ["S098", "S099", "S010"];
 
-export default function SeatBookingForm() {
+function SeatBookingContent() {
   const searchParams = useSearchParams();
   const seat = searchParams.get("seat") || "A1";
-  const busParam = searchParams.get("bus") || buses[0]; // Default to the first bus if not provided
+  const busParam = searchParams.get("bus") || buses[0];
 
   const dispatch = useDispatch();
-  const bookings = useSelector((state: RootState) => state.busBookings); // Access current bookings from Redux
+  const bookings = useSelector((state: RootState) => state.busBookings);
 
   const [name, setName] = useState<string>("");
-  const [bus, setBus] = useState<string>(busParam); // Initialize with query param
+  const [bus] = useState<string>(busParam);
   const [destination, setDestination] = useState<string>(destinations[0]);
   const [time, setTime] = useState<string>(times[0]);
 
@@ -117,5 +118,13 @@ export default function SeatBookingForm() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function SeatBookingForm() {
+  return (
+    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
+      <SeatBookingContent />
+    </Suspense>
   );
 }

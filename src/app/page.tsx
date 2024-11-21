@@ -1,8 +1,8 @@
 "use client";
 
+import { Suspense, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,7 +41,7 @@ const seats = [
 ];
 const buses = ["S098", "S099", "S010"];
 
-export default function SeatUI() {
+function SeatContent() {
   const searchParams = useSearchParams();
   const adminView = searchParams.get("adminview") === "true"; // Check if admin view is enabled
   const selectedBusParam = searchParams.get("bus") || buses[0]; // Default to the first bus
@@ -93,7 +93,7 @@ export default function SeatUI() {
       <div className="bg-blue-200 text-blue-800 font-bold text-center py-2">
         {adminView ? "Admin Panel" : "User Panel"}
       </div>
-      
+
       <div className="flex flex-col justify-center items-center h-screen">
         <div className="w-full max-w-lg p-4">
           {/* Admin/User Panel Button */}
@@ -208,5 +208,13 @@ export default function SeatUI() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function SeatUI() {
+  return (
+    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
+      <SeatContent />
+    </Suspense>
   );
 }
