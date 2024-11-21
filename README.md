@@ -34,3 +34,4 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## Deployed on Vercel
 
+https://selise-bus-seat-booking-lc5g.vercel.app/
